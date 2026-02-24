@@ -94,11 +94,13 @@
         statusEl.innerText = "Submitting...";
 
         try {
-          await fetch('https://hooks.zapier.com/hooks/catch/26580684/u0yszzn/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+await fetch('https://hooks.zapier.com/hooks/catch/26580684/u0yszzn/', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data)
+});
+
+          
 
           statusEl.innerText = "Thank you! Check your SMS/email to book.";
 
