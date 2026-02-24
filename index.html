@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Appointment</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #appointment-widget {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 320px;
+    }
+
+    #appointment-widget h3 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    #appointment-widget input,
+    #appointment-widget textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    #appointment-widget button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      background: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #appointment-widget button:hover {
+      background: #45a049;
+    }
+
+    #status {
+      margin-top: 10px;
+      font-size: 14px;
+      text-align: center;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="appointment-widget">
+    <h3>Book Your Appointment</h3>
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="tel" id="phone" placeholder="Phone" required>
+    <textarea id="service" placeholder="Service / Notes"></textarea>
+    <button id="submit">Book Now</button>
+    <p id="status"></p>
+  </div>
+
+  <script>
+    (function(){
+      const submitBtn = document.getElementById('submit');
+      const statusEl = document.getElementById('status');
+
+      submitBtn.onclick = async function() {
+        const data = {
+          name: document.getElementById('name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          service: document.getElementById('service').value
+        };
+
+        // Basic validation
+        if (!data.name || !data.phone) {
+          statusEl.innerText = "Please enter your name and phone number.";
+          return;
+        }
+
+        statusEl.innerText = "Submitting...";
+
+        try {
+          await fetch('https://hooks.zapier.com/hooks/catch/YOUR_ZAPIER_ID/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          statusEl.innerText = "Thank you! Check your SMS/email to book.";
+
+          // Clear form
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('phone').value = '';
+          document.getElementById('service').value = '';
+
+        } catch (error) {
+          console.error(error);
+          statusEl.innerText = "Oops! Something went wrong. Try again.";
+        }
+      }
+    })();
+  </script>
+
+</body>
+</html>
